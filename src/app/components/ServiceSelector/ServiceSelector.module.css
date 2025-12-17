@@ -1,0 +1,74 @@
+.wrapper {
+  max-width: 520px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.title {
+  font-size: 22px;
+  font-weight: 600;
+  color: #6a502a;
+  margin-bottom: 20px;
+}
+
+.options {
+  display: flex;
+  gap: 14px;
+  justify-content: center;
+}
+
+/* BOTÓN */
+.option {
+  flex: 1;
+  max-width: 240px;
+  padding: 14px 18px;
+  border-radius: 14px;
+  border: 2px solid #f1c98d;
+  background: #f9f8f7;
+  cursor: pointer;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+
+  font-size: 15px;
+  font-weight: 600;
+  color: #000;
+
+  transition: background 0.2s ease, border 0.2s ease, color 0.2s ease;
+}
+
+/* ICONO */
+.icon {
+  font-size: 18px;
+  color: #6a502a;
+  transition: color 0.2s ease;
+}
+
+/* HOVER */
+.option:hover {
+  background: #f2e8e1;
+}
+
+/* ACTIVO */
+.active {
+  background: #cf79e7;
+  border-color: #cf79e7;
+  color: #fff;
+}
+
+.active .icon {
+  color: #fff;
+}
+
+/* RESPONSIVE */
+@media (max-width: 480px) {
+  .options {
+    flex-direction: column;
+  }
+
+  .option {
+    max-width: 100%;
+  }
+}

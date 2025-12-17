@@ -1,0 +1,76 @@
+.wrapper {
+  max-width: 360px;
+  margin: 0 auto;
+  background: #f9f8f7;
+  border-radius: 18px;
+  padding: 18px;
+  border: 1px solid #f1c98d;
+}
+
+/* BOTÓN VOLVER */
+.backButton {
+  background: none;
+  border: none;
+  color: #6a502a;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  margin-bottom: 12px;
+  text-align: left;
+}
+
+.backButton:hover {
+  text-decoration: underline;
+}
+
+/* TÍTULO */
+.title {
+  font-size: 16px;
+  font-weight: 600;
+  color: #6a502a;
+  margin-bottom: 14px;
+  text-align: center;
+}
+
+/* GRID */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+}
+
+/* SLOT */
+.slot {
+  padding: 12px 0;
+  border-radius: 14px;
+  border: 1px solid #f2e8e1;
+  background: #f2e8e1;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  color: #000;
+  transition: all 0.15s ease;
+}
+
+.slot:hover {
+  background: #f1c98d;
+}
+
+/* SELECCIONADO */
+.selected {
+  background: #cf79e7;
+  color: #fff;
+  border-color: #cf79e7;
+  font-weight: 600;
+}
+
+/* RESPONSIVE */
+@media (max-width: 420px) {
+  .wrapper {
+    max-width: 100%;
+  }
+
+  .grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}

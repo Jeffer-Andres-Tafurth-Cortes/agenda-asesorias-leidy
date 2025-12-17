@@ -1,0 +1,14 @@
+.flowWrapper {
+  min-height: 100vh; /* ocupa toda la pantalla */
+  width: 100%;
+  display: flex;
+  align-items: center; /* centra vertical */
+  justify-content: center; /* centra horizontal */
+  padding: 24px;
+  box-sizing: border-box;
+}
+
+.flowContent {
+  width: 100%;
+  max-width: 520px; /* ancho controlado */
+}
