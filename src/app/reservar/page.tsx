@@ -1,4 +1,4 @@
-export default function PagoPage() {
+export default function Reservar() {
   return (
     <div>
       <h1>Página de Pago</h1>
