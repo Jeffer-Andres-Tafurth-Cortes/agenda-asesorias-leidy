@@ -1,6 +1,13 @@
 export type ServiceType = "virtual" | "presencial";
 
-export const SERVICES = {
+export const SERVICES: Record<
+  ServiceType,
+  {
+    label: string;
+    duration: string;
+    price: number;
+  }
+> = {
   virtual: {
     label: "Asesoría Virtual",
     duration: "45 minutos",

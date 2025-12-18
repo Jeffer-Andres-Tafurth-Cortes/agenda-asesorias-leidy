@@ -1,10 +1,12 @@
 "use client";
 
 import styles from "./TimeSlots.module.css";
-import { generateTimeSlots, ServiceType } from "./TimeSlots.utils";
+import { ServiceType } from "../../lib/services";
+import { getAvailableTimes } from "../../lib/availability";
 
 interface Props {
   service: ServiceType;
+  date: Date; // ⬅️ NUEVO
   selected: string | null;
   onSelect: (time: string) => void;
   onBack?: () => void;
@@ -12,15 +14,15 @@ interface Props {
 
 export default function TimeSlots({
   service,
+  date,
   selected,
   onSelect,
   onBack,
 }: Props) {
-  const slots = generateTimeSlots(service);
+  const slots = getAvailableTimes(date, service);
 
   return (
     <div className={styles.wrapper}>
-      {/* Back button */}
       {onBack && (
         <button className={styles.backButton} onClick={onBack}>
           ← Volver
@@ -29,19 +31,25 @@ export default function TimeSlots({
 
       <h4 className={styles.title}>Selecciona una hora</h4>
 
-      <div className={styles.grid}>
-        {slots.map((time) => (
-          <button
-            key={time}
-            className={`${styles.slot} ${
-              selected === time ? styles.selected : ""
-            }`}
-            onClick={() => onSelect(time)}
-          >
-            {time}
-          </button>
-        ))}
-      </div>
+      {slots.length === 0 ? (
+        <p className={styles.empty}>
+          No hay horarios disponibles para esta fecha
+        </p>
+      ) : (
+        <div className={styles.grid}>
+          {slots.map((time) => (
+            <button
+              key={time}
+              className={`${styles.slot} ${
+                selected === time ? styles.selected : ""
+              }`}
+              onClick={() => onSelect(time)}
+            >
+              {time}
+            </button>
+          ))}
+        </div>
+      )}
     </div>
   );
 }

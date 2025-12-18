@@ -59,14 +59,17 @@ export default function BookingFlow() {
               exit={{ opacity: 0, y: -30 }}
               transition={transition}
             >
-              <Calendar
-                value={date}
-                onChange={(value) => {
-                  setDate(value);
-                  setStep("time");
-                }}
-                onBack={() => setStep("service")}
-              />
+              {step === "date" && service && (
+                <Calendar
+                  value={date}
+                  service={service}
+                  onChange={(value) => {
+                    setDate(value);
+                    setStep("time");
+                  }}
+                  onBack={() => setStep("service")}
+                />
+              )}
             </motion.div>
           )}
 
@@ -81,6 +84,7 @@ export default function BookingFlow() {
             >
               <TimeSlots
                 service={service}
+                date={date!}
                 selected={time}
                 onSelect={(value) => {
                   setTime(value);
@@ -125,7 +129,6 @@ export default function BookingFlow() {
                 time={time}
                 client={client}
                 onEdit={() => setStep("service")}
-                onConfirm={() => setStep("payment")}
               />
             </motion.div>
           )}

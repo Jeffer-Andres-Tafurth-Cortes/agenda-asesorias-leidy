@@ -7,14 +7,17 @@ import {
   getFirstDayOfMonth,
   formatMonth,
 } from "./Calendar.utils";
+import { isDateAvailable } from "../../lib/availability";
+import { ServiceType } from "../../lib/services";
 
 interface Props {
   value: Date | null;
+  service: ServiceType;
   onChange: (date: Date) => void;
   onBack?: () => void;
 }
 
-export default function Calendar({ value, onChange, onBack }: Props) {
+export default function Calendar({ value, onChange, onBack, service }: Props) {
   const today = new Date();
   const [currentYear, setCurrentYear] = useState(today.getFullYear());
   const [currentMonth, setCurrentMonth] = useState(today.getMonth());
@@ -75,13 +78,17 @@ export default function Calendar({ value, onChange, onBack }: Props) {
         {Array.from({ length: daysInMonth }).map((_, i) => {
           const day = i + 1;
           const date = new Date(currentYear, currentMonth, day);
+          const isAvailable = isDateAvailable(date, service);
           const selected = value && isSameDay(value, date);
 
           return (
             <button
               key={day}
-              className={`${styles.day} ${selected ? styles.selected : ""}`}
-              onClick={() => onChange(date)}
+              disabled={!isAvailable}
+              className={`${styles.day} ${selected ? styles.selected : ""} ${
+                !isAvailable ? styles.disabled : ""
+              }`}
+              onClick={() => isAvailable && onChange(date)}
             >
               {day}
             </button>

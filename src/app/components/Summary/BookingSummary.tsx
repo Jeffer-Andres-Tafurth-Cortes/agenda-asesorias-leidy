@@ -3,13 +3,13 @@
 import styles from "./BookingSummary.module.css";
 import { BookingData } from "../Form/BookingForm";
 import { SERVICES, ServiceType } from "../../lib/services";
+import WompiButton from "../UI/WompiButton";
 
 interface Props {
   service: ServiceType;
   date: Date;
   time: string;
   client: BookingData;
-  onConfirm: () => void;
   onEdit?: () => void;
 }
 
@@ -18,10 +18,14 @@ export default function BookingSummary({
   date,
   time,
   client,
-  onConfirm,
   onEdit,
 }: Props) {
   const serviceInfo = SERVICES[service];
+
+  // 🔐 Referencia única para Wompi
+  const reference = `ASESORIA-${service}-${
+    date.toISOString().split("T")[0]
+  }-${time.replace(":", "")}`;
 
   return (
     <section className={styles.wrapper}>
@@ -74,7 +78,7 @@ export default function BookingSummary({
           <strong>${serviceInfo.price.toLocaleString("es-CO")} COP</strong>
         </div>
 
-        {/* MENSAJE DE CONFIANZA */}
+        {/* MENSAJE */}
         <p className={styles.note}>
           Tu asesoría queda reservada únicamente al confirmar el pago. Toda la
           información es tratada de forma confidencial.
@@ -87,9 +91,13 @@ export default function BookingSummary({
               Modificar
             </button>
           )}
-          <button className={styles.primary} onClick={onConfirm}>
-            Confirmar y pagar
-          </button>
+
+          {/* 💳 BOTÓN WOMPI */}
+          <WompiButton
+            reference={reference}
+            amount={serviceInfo.price}
+            email={client.email}
+          />
         </div>
       </div>
     </section>
