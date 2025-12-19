@@ -1,8 +1,11 @@
-export default function Pago() {
+export default function ConfirmacionPago() {
   return (
-    <div>
-      <h1>Página de Pago</h1>
-      <p>Bienvenido a la página de pago. Aquí puedes completar tu compra.</p>
-    </div>
+    <main style={{ textAlign: "center", padding: "80px" }}>
+      <h1>🎉 Pago en proceso</h1>
+      <p>
+        Gracias por tu pago. Estamos validando la transacción y te enviaremos la
+        confirmación de tu asesoría por correo.
+      </p>
+    </main>
   );
 }

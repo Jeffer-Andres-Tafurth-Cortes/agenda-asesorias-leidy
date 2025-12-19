@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import styles from "./BookingSummary.module.css";
 import { BookingData } from "../Form/BookingForm";
 import { SERVICES, ServiceType } from "../../lib/services";
@@ -21,84 +22,66 @@ export default function BookingSummary({
   onEdit,
 }: Props) {
   const serviceInfo = SERVICES[service];
+  const [paymentData, setPaymentData] = useState<null | {
+    reference: string;
+    amount: number;
+    email: string;
+  }>(null);
 
-  // 🔐 Referencia única para Wompi
-  const reference = `ASESORIA-${service}-${
-    date.toISOString().split("T")[0]
-  }-${time.replace(":", "")}`;
+  const createBooking = async () => {
+    const res = await fetch("/api/bookings", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        service,
+        date,
+        time,
+        name: client.name,
+        email: client.email,
+        phone: client.phone,
+      }),
+    });
+
+    const data = await res.json();
+    setPaymentData(data);
+  };
 
   return (
     <section className={styles.wrapper}>
       <h2 className={styles.title}>Confirma tu asesoría</h2>
 
       <div className={styles.card}>
-        {/* SERVICIO */}
-        <div className={styles.block}>
-          <h3>{serviceInfo.label}</h3>
-          <p>
-            ⏱ {serviceInfo.duration} · 📍{" "}
-            {service === "virtual" ? "Modalidad online" : "Atención presencial"}
-          </p>
-        </div>
+        <h3>{serviceInfo.label}</h3>
 
-        {/* FECHA */}
-        <div className={styles.row}>
-          <span>Fecha</span>
-          <strong>
-            {date.toLocaleDateString("es-CO", {
-              weekday: "long",
-              day: "numeric",
-              month: "long",
-              year: "numeric",
-            })}
-          </strong>
-        </div>
-
-        <div className={styles.row}>
-          <span>Hora</span>
-          <strong>{time}</strong>
-        </div>
-
-        {/* CLIENTE */}
-        <div className={styles.client}>
-          <p>
-            <strong>Nombre:</strong> {client.name}
-          </p>
-          <p>
-            <strong>Email:</strong> {client.email}
-          </p>
-          <p>
-            <strong>Teléfono:</strong> {client.phone}
-          </p>
-        </div>
-
-        {/* PRECIO */}
-        <div className={styles.priceBox}>
-          <span>Total a pagar</span>
-          <strong>${serviceInfo.price.toLocaleString("es-CO")} COP</strong>
-        </div>
-
-        {/* MENSAJE */}
-        <p className={styles.note}>
-          Tu asesoría queda reservada únicamente al confirmar el pago. Toda la
-          información es tratada de forma confidencial.
+        <p>
+          {date.toLocaleDateString("es-CO")} · {time}
         </p>
 
-        {/* ACCIONES */}
-        <div className={styles.actions}>
-          {onEdit && (
-            <button className={styles.secondary} onClick={onEdit}>
-              Modificar
-            </button>
-          )}
+        <p>
+          <strong>{client.name}</strong> · {client.email}
+        </p>
 
-          {/* 💳 BOTÓN WOMPI */}
-          <WompiButton
-            reference={reference}
-            amount={serviceInfo.price}
-            email={client.email}
-          />
+        <div className={styles.priceBox}>
+          ${serviceInfo.price.toLocaleString("es-CO")} COP
         </div>
+
+        {onEdit && (
+          <button className={styles.secondary} onClick={onEdit}>
+            Modificar
+          </button>
+        )}
+
+        {!paymentData ? (
+          <button className={styles.primary} onClick={createBooking}>
+            Confirmar y pagar
+          </button>
+        ) : (
+          <WompiButton
+            reference={paymentData.reference}
+            amount={paymentData.amount}
+            email={paymentData.email}
+          />
+        )}
       </div>
     </section>
   );
